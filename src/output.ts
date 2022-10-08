@@ -20,10 +20,7 @@ export function readStore(fileName: string): Record<string, unknown> {
   return JSON.parse(data) as Record<string, unknown>;
 }
 
-export function writeStore(
-  fileName: string,
-  data: Record<string, unknown>
-): void {
+export function writeStore(fileName: string, data: any): void {
   const filePath = path.join(DIRECTORY_DIST, fileName);
   fs.writeFileSync(filePath, JSON.stringify(data));
 }

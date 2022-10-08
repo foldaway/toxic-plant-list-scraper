@@ -3,13 +3,11 @@ import 'ts-polyfill/lib/es2019-array';
 import puppeteer, { Browser } from 'puppeteer';
 
 import * as Sentry from '@sentry/node';
-import { readStore, writeStore } from './output';
+import { writeStore } from './output';
 
 import fs from 'fs';
 
-import { ToxicPlants } from './sources/toxic-plants/constants';
-import cats from './sources/toxic-plants/cats';
-import { Plant } from './sources/toxic-plants/model';
+import toxicPlantsScraper from './sources/toxic-plants';
 
 const { NODE_ENV, SENTRY_DSN } = process.env;
 
@@ -26,27 +24,15 @@ try {
 } catch (e) {}
 
 async function toxicPlants(browser: Browser) {
-  async function tempFunc(
-    toxicPlant: ToxicPlants,
-    workFunc: (browser: Browser) => Promise<Plant[]>
-  ) {
-    try {
-      console.log('Scraping: ', toxicPlant);
-      const data = await workFunc(browser);
-
-      const store = readStore('toxicPlants.json');
-      writeStore('toxicPlants.json', {
-        ...store,
-        [toxicPlant]: data,
-      });
-      console.log('Completed: ', toxicPlant);
-    } catch (e) {
-      console.error(e);
-      Sentry?.captureException(e);
-    }
+  try {
+    console.log('Scraping...');
+    const data = await toxicPlantsScraper(browser);
+    writeStore('toxicPlants.json', data);
+    console.log('Completed');
+  } catch (e) {
+    console.error(e);
+    Sentry?.captureException(e);
   }
-
-  await Promise.all([tempFunc(ToxicPlants.cats, cats)]);
 }
 
 async function scraper() {
