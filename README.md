@@ -1,7 +1,7 @@
-# sg-scraper
-![.github/workflows/run.yml](https://github.com/bottleneckco/sg-scraper/workflows/.github/workflows/run.yml/badge.svg)
+# toxic-plant-list-scraper
+[![Run scraper](https://github.com/fourthclasshonours/toxic-plant-list-scraper/actions/workflows/run.yml/badge.svg)](https://github.com/fourthclasshonours/toxic-plant-list-scraper/actions/workflows/run.yml)
 
-Scripts to scrape metadata of places in Singapore.
+Script to scrape list of toxic plants from [ASPCA](https://www.aspca.org/pet-care/animal-poison-control/toxic-and-non-toxic-plants)
 
 ### Development
 1. Run `yarn install`

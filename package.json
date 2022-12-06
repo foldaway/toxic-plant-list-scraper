@@ -1,9 +1,9 @@
 {
-  "name": "sg-scraper",
+  "name": "toxic-plant-list-scraper",
   "version": "1.0.0",
   "main": "main.js",
-  "repository": "git@github.com:bottleneckco/sg-scraper.git",
-  "author": "Duncan Leo <hello@duncanleo.me>",
+  "repository": "git@github.com:fourthclasshonours/toxic-plant-list-scraper.git",
+  "author": "Chester How <chesterhow@gmail.com>",
   "license": "MIT",
   "scripts": {
     "scrape": "node dist/scraper.js",
