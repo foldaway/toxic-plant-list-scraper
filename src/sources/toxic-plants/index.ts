@@ -47,19 +47,24 @@ export default async function toxicPlants(browser: Browser): Promise<Plant[]> {
 
   const incompletePlantsMap: Record<string, IncompletePlant> = {};
 
+  // Scrape toxic plants for each animal.
   for (const [animal, pageUrl] of Object.entries(PAGE_URLS)) {
-    const incompletePlants = await scrapeUrl(pageUrl);
+    const incompletePlantsForAnimal = await scrapeUrl(pageUrl);
 
-    incompletePlants.forEach((incompletePlant) => {
-      if (!(incompletePlant.name in incompletePlantsMap)) {
-        incompletePlantsMap[incompletePlant.name] = incompletePlant;
+    // Populate the shared map to eliminate duplicate plants.
+    incompletePlantsForAnimal.forEach((incompletePlant) => {
+      // NOTE: we have to key by name + scientific name as the names are not unique.
+      const plantKey = `${incompletePlant.name} ${incompletePlant.scientificName}`;
+      if (!(plantKey in incompletePlantsMap)) {
+        incompletePlantsMap[plantKey] = incompletePlant;
       }
-      incompletePlantsMap[incompletePlant.name].toxicTo.push(animal as Animal);
+      incompletePlantsMap[plantKey].toxicTo.push(animal as Animal);
     });
   }
 
   const plants: Plant[] = [];
 
+  // Scrape remaining properties for each plant.
   for (const incompletePlant of Object.values(incompletePlantsMap)) {
     await page.goto(incompletePlant.link);
 
